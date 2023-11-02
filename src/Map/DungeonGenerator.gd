@@ -5,6 +5,11 @@ extends Node
 @export var map_width: int = 80
 @export var map_height: int = 48
 
+@export_category("Room RNG")
+@export var max_rooms: int = 30
+@export var room_max_size: int = 10
+@export var room_min_size: int = 6
+
 var _rng := RandomNumberGenerator.new()
 
 func _ready():
@@ -41,15 +46,38 @@ func _tunnel_between(dungeon: MapData, start: Vector2i, end: Vector2i):
 		_tunnel_vertical(dungeon, start.x, start.y, end.y)
 		_tunnel_horizontal(dungeon, end.y, start.x, end.x)
 
-func generate_dungeon() -> MapData:
+func _generate_new_room(dw: int, dh: int, min_size: int, max_size: int):
+	var room_width: int = _rng.randi_range(room_min_size, room_max_size)
+	var room_height: int = _rng.randi_range(room_min_size, room_max_size)
+	
+	var x: int = _rng.randi_range(0, dw - room_width - 1)
+	var y: int = _rng.randi_range(0, dh - room_height - 1)
+	
+	return Rect2i(x, y, room_width, room_height)
+
+func generate_dungeon(player: Entity) -> MapData:
 	var dungeon := MapData.new(map_width, map_height)
 	
-	var room_1 := Rect2i(20, 15, 10, 15)
-	var room_2 := Rect2i(35, 15, 10, 15)
+	var rooms: Array[Rect2i] = []
 	
-	_carve_room(dungeon, room_1)
-	_carve_room(dungeon, room_2)
-	
-	_tunnel_between(dungeon, room_1.get_center(), room_2.get_center())
+	for _try_room in max_rooms:
+		var new_room: Rect2i = _generate_new_room(dungeon.width, dungeon.height, room_min_size, room_max_size)
+		
+		var has_intersections := false
+		for room in rooms:
+			if room.intersects(new_room.grow(-1)):
+				has_intersections = true
+				break
+		if has_intersections:
+			continue
+		
+		_carve_room(dungeon, new_room)
+		
+		if rooms.is_empty():
+			player.grid_position = new_room.get_center()
+		else:
+			_tunnel_between(dungeon, rooms.back().get_center(), new_room.get_center())
+		
+		rooms.append(new_room)
 	
 	return dungeon

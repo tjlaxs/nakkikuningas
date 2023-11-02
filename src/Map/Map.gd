@@ -8,8 +8,8 @@ extends Node2D
 
 var map_data: MapData
 
-func _ready() -> void:
-	map_data = dungeon_generator.generate_dungeon()
+func generate(player: Entity) -> void:
+	map_data = dungeon_generator.generate_dungeon(player)
 	_place_tiles()
 
 func _place_tiles() -> void:
