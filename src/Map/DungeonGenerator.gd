@@ -21,6 +21,26 @@ func _carve_room(dungeon: MapData, room: Rect2i) -> void:
 		for x in range(inner.position.x, inner.end.x + 1):
 			_carve_tile(dungeon, x, y)
 
+func _tunnel_horizontal(dungeon: MapData, y: int, x_start: int, x_end: int) -> void:
+	var x_min: int = mini(x_start, x_end)
+	var x_max: int = maxi(x_start, x_end)
+	for x in range(x_min, x_max + 1):
+		_carve_tile(dungeon, x, y)
+
+func _tunnel_vertical(dungeon: MapData, x: int, y_start: int, y_end: int) -> void:
+	var y_min: int = mini(y_start, y_end)
+	var y_max: int = maxi(y_start, y_end)
+	for y in range(y_min, y_max + 1):
+		_carve_tile(dungeon, x, y)
+
+func _tunnel_between(dungeon: MapData, start: Vector2i, end: Vector2i):
+	if _rng.randf() < 0.5:
+		_tunnel_horizontal(dungeon, start.y, start.x, end.x)
+		_tunnel_vertical(dungeon, end.x, start.y, end.y)
+	else:
+		_tunnel_vertical(dungeon, start.x, start.y, end.y)
+		_tunnel_horizontal(dungeon, end.y, start.x, end.x)
+
 func generate_dungeon() -> MapData:
 	var dungeon := MapData.new(map_width, map_height)
 	
@@ -29,5 +49,7 @@ func generate_dungeon() -> MapData:
 	
 	_carve_room(dungeon, room_1)
 	_carve_room(dungeon, room_2)
+	
+	_tunnel_between(dungeon, room_1.get_center(), room_2.get_center())
 	
 	return dungeon
