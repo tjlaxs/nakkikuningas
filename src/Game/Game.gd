@@ -15,6 +15,7 @@ func _ready() -> void:
 	player.add_child(camera)
 	entities.add_child(player)
 	map.generate(player)
+	map.update_fov(player.grid_position)
 
 func get_map_data() -> MapData:
 	return map.map_data
@@ -22,4 +23,7 @@ func get_map_data() -> MapData:
 func _physics_process(delta) -> void:
 	var action: Action = event_handler.get_action()
 	if action:
+		var previous_player_position: Vector2i = player.grid_position
 		action.perform(self, player)
+		if player.grid_position != previous_player_position:
+			map.update_fov(player.grid_position)
