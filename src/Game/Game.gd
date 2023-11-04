@@ -25,3 +25,10 @@ func _physics_process(delta) -> void:
 		action.perform(self, player)
 		if player.grid_position != previous_player_position:
 			map.update_fov(player.grid_position)
+		_handle_enemy_turns()
+
+func _handle_enemy_turns() -> void:
+	for entity in get_map_data().entities:
+		if entity == player:
+			continue
+		print("The %s wonders when it will get to take a real turn." % entity.get_entity_name())
