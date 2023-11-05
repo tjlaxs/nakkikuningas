@@ -71,9 +71,9 @@ func _place_entities(dungeon: MapData, room: Rect2i) -> void:
 		if can_place:
 			var new_entity: Entity
 			if _rng.randf() < 0.8:
-				new_entity = Entity.new(new_entity_position, entity_types.orc)
+				new_entity = Entity.new(dungeon, new_entity_position, entity_types.orc)
 			else:
-				new_entity = Entity.new(new_entity_position, entity_types.troll)
+				new_entity = Entity.new(dungeon, new_entity_position, entity_types.troll)
 			dungeon.entities.append(new_entity)
 
 func _generate_new_room(dw: int, dh: int, min_size: int, max_size: int):
@@ -106,6 +106,7 @@ func generate_dungeon(player: Entity) -> MapData:
 		
 		if rooms.is_empty():
 			player.grid_position = new_room.get_center()
+			player.map_data = dungeon
 		else:
 			_tunnel_between(dungeon, rooms.back().get_center(), new_room.get_center())
 		
