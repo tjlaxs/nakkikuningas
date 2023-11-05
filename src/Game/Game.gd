@@ -19,7 +19,7 @@ func get_map_data() -> MapData:
 	return map.map_data
 
 func _physics_process(delta) -> void:
-	var action: Action = input_handler-get_action()
+	var action: Action = input_handler.get_action(player)
 	if action:
 		var previous_player_position: Vector2i = player.grid_position
 		action.perform()
@@ -28,7 +28,6 @@ func _physics_process(delta) -> void:
 		_handle_enemy_turns()
 
 func _handle_enemy_turns() -> void:
-	for entity in get_map_data().entities:
-		if entity == player:
-			continue
-		print("The %s wonders when it will get to take a real turn." % entity.get_entity_name())
+	for entity in get_map_data().get_actors():
+		if entity.is_alive() and entity == player:
+			entity.ai_component.perform()
