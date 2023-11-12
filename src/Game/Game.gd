@@ -17,6 +17,10 @@ func _ready() -> void:
 	player.add_child(camera)
 	map.generate(player)
 	map.update_fov(player.grid_position)
+	MessageLog.send_message.bind(
+		"Welcome to the dark dungeons!",
+		GameColors.WELCOME_TEXT
+	).call_deferred()
 
 func get_map_data() -> MapData:
 	return map.map_data
