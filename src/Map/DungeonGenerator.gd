@@ -11,7 +11,7 @@ extends Node
 @export var room_min_size: int = 6
 
 @export_category("Monster RNG")
-@export var max_monster_per_room = 2
+@export var max_monsters_per_room = 2
 
 const entity_types = {
 	"orc": preload("res://assets/definitions/entities/actors/EntityDefinitionOrc.tres"),
@@ -55,7 +55,7 @@ func _tunnel_between(dungeon: MapData, start: Vector2i, end: Vector2i):
 		_tunnel_horizontal(dungeon, end.y, start.x, end.x)
 
 func _place_entities(dungeon: MapData, room: Rect2i) -> void:
-	var number_of_monsters: int = _rng.randi_range(0, max_monster_per_room)
+	var number_of_monsters: int = _rng.randi_range(0, max_monsters_per_room)
 	
 	for _i in number_of_monsters:
 		var x: int = randi_range(room.position.x + 1, room.end.x - 1)
@@ -71,12 +71,12 @@ func _place_entities(dungeon: MapData, room: Rect2i) -> void:
 		if can_place:
 			var new_entity: Entity
 			if _rng.randf() < 0.8:
-				new_entity = Entity.new(new_entity_position, entity_types.orc)
+				new_entity = Entity.new(dungeon, new_entity_position, entity_types.orc)
 			else:
-				new_entity = Entity.new(new_entity_position, entity_types.troll)
+				new_entity = Entity.new(dungeon, new_entity_position, entity_types.troll)
 			dungeon.entities.append(new_entity)
 
-func _generate_new_room(dw: int, dh: int, min_size: int, max_size: int):
+func _generate_new_room(dw: int, dh: int, _min_size: int, _max_size: int):
 	var room_width: int = _rng.randi_range(room_min_size, room_max_size)
 	var room_height: int = _rng.randi_range(room_min_size, room_max_size)
 	
@@ -86,7 +86,7 @@ func _generate_new_room(dw: int, dh: int, min_size: int, max_size: int):
 	return Rect2i(x, y, room_width, room_height)
 
 func generate_dungeon(player: Entity) -> MapData:
-	var dungeon := MapData.new(map_width, map_height)
+	var dungeon := MapData.new(map_width, map_height, player)
 	dungeon.entities.append(player)
 	
 	var rooms: Array[Rect2i] = []
@@ -106,6 +106,7 @@ func generate_dungeon(player: Entity) -> MapData:
 		
 		if rooms.is_empty():
 			player.grid_position = new_room.get_center()
+			player.map_data = dungeon
 		else:
 			_tunnel_between(dungeon, rooms.back().get_center(), new_room.get_center())
 		
@@ -113,4 +114,5 @@ func generate_dungeon(player: Entity) -> MapData:
 		
 		rooms.append(new_room)
 	
+	dungeon.setup_pathfinding()
 	return dungeon

@@ -1,28 +1,67 @@
 class_name Entity
 extends Sprite2D
 
+const Type = {
+	"CORPSE": 0,
+	"ITEM": 1,
+	"ACTOR": 2,
+}
+
+const AiType = {
+	"NONE": 0,
+	"HOSTILE": 1,
+}
+
 var _definition: EntityDefinition
+var entity_name: String
+var blocks_movement: bool
+var map_data: MapData
+var fighter_component: FighterComponent
+var ai_component: BaseAiComponent
+
+var type: int:
+	set(value):
+		type = value
+		z_index = type
 
 var grid_position: Vector2i:
 	set(value):
 		grid_position = value
 		position = Grid.grid_to_world(grid_position)
 
-func _init(start_position: Vector2i, entity_definition: EntityDefinition) -> void:
+func _init(md: MapData, start_position: Vector2i, entity_definition: EntityDefinition) -> void:
 	centered = false
 	grid_position = start_position
+	self.map_data = md
 	set_entity_type(entity_definition)
 
 func move(move_offset: Vector2i) -> void:
+	map_data.unregister_blocking_entity(self)
 	grid_position += move_offset
+	map_data.register_blocking_entity(self)
 
 func is_blocking_movement() -> bool:
-	return _definition.is_blocking_movement
+	return blocks_movement
 
 func get_entity_name() -> String:
 	return _definition.name
 
 func set_entity_type(entity_definition: EntityDefinition) -> void:
 	_definition = entity_definition
+	type = _definition.type
+	blocks_movement = _definition.is_blocking_movement
+	entity_name = _definition.name
 	texture = entity_definition.texture
 	modulate = entity_definition.color
+	
+	match entity_definition.ai_type:
+		AiType.HOSTILE:
+			ai_component = HostileEnemyAiComponent.new()
+			add_child(ai_component)
+	
+	if entity_definition.fighter_definition:
+		fighter_component = FighterComponent.new(entity_definition.fighter_definition)
+		add_child(fighter_component)
+
+func is_alive() -> bool:
+	return ai_component != null
