@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://c81ythayg82q3"]
+[gd_scene load_steps=15 format=3 uid="uid://c81ythayg82q3"]
 
 [ext_resource type="Script" path="res://src/Game/Game.gd" id="1_eyp25"]
 [ext_resource type="Script" path="res://src/Game/EventHandlers/InputHandler.gd" id="2_1ptu4"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://src/Game/EventHandlers/GameOverInputHandler.gd" id="3_ka2xn"]
 [ext_resource type="Script" path="res://src/Map/Map.gd" id="3_makwk"]
 [ext_resource type="Script" path="res://src/Map/DungeonGenerator.gd" id="4_2v6nn"]
+[ext_resource type="Script" path="res://src/Game/EventHandlers/HistoryViewerInputHandler.gd" id="5_6l3as"]
 [ext_resource type="Script" path="res://src/Map/FieldOfView.gd" id="5_j7kt0"]
 [ext_resource type="Script" path="res://src/GUI/HpDisplay.gd" id="8_awubo"]
 [ext_resource type="FontFile" uid="uid://damfmyhn5xdud" path="res://assets/fonts/SourceCodePro-Medium.ttf" id="8_wjjmf"]
@@ -61,6 +62,11 @@ script = ExtResource("2_wcq1s")
 
 [node name="GameOverInputHandler" type="Node" parent="HBoxContainer/SubViewportContainer/SubViewport/Game/InputHandler"]
 script = ExtResource("3_ka2xn")
+
+[node name="HistoryViewerInputHandler" type="Node" parent="HBoxContainer/SubViewportContainer/SubViewport/Game/InputHandler"]
+script = ExtResource("5_6l3as")
+messages_panel_path = NodePath("../../../../../InfoBar/MessagesPanel")
+message_log_path = NodePath("../../../../../InfoBar/MessagesPanel/MessageLog")
 
 [node name="Map" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Game"]
 script = ExtResource("3_makwk")

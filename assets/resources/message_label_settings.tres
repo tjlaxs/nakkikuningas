@@ -3,4 +3,6 @@
 [ext_resource type="FontFile" uid="uid://damfmyhn5xdud" path="res://assets/fonts/SourceCodePro-Medium.ttf" id="1_h3dq5"]
 
 [resource]
+line_spacing = 1.0
 font = ExtResource("1_h3dq5")
+font_size = 12
