@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c81ythayg82q3"]
+[gd_scene load_steps=16 format=3 uid="uid://c81ythayg82q3"]
 
 [ext_resource type="Script" path="res://src/Game/Game.gd" id="1_eyp25"]
 [ext_resource type="Script" path="res://src/Game/EventHandlers/InputHandler.gd" id="2_1ptu4"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://src/Map/FieldOfView.gd" id="5_j7kt0"]
 [ext_resource type="Script" path="res://src/GUI/HpDisplay.gd" id="8_awubo"]
 [ext_resource type="FontFile" uid="uid://damfmyhn5xdud" path="res://assets/fonts/SourceCodePro-Medium.ttf" id="8_wjjmf"]
+[ext_resource type="Script" path="res://src/GUI/MouseoverChecker.gd" id="9_rphkx"]
 [ext_resource type="Script" path="res://src/GUI/MessageLog.gd" id="10_olaak"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0okwi"]
@@ -81,6 +82,9 @@ script = ExtResource("4_2v6nn")
 [node name="FieldOfView" type="Node" parent="HBoxContainer/SubViewportContainer/SubViewport/Game/Map"]
 script = ExtResource("5_j7kt0")
 
+[node name="MouseoverChecker" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Game/Map"]
+script = ExtResource("9_rphkx")
+
 [node name="Camera2D" type="Camera2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Game"]
 
 [node name="InfoBar" type="VBoxContainer" parent="HBoxContainer"]
@@ -113,6 +117,10 @@ label_settings = SubResource("LabelSettings_ekvf7")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="MouseoverLabel" type="Label" parent="HBoxContainer/InfoBar/StatsPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+
 [node name="MessagesPanel" type="PanelContainer" parent="HBoxContainer/InfoBar"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -130,3 +138,4 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [connection signal="player_created" from="HBoxContainer/SubViewportContainer/SubViewport/Game" to="HBoxContainer/InfoBar/StatsPanel/VBoxContainer/HpDisplay" method="initialize"]
+[connection signal="entities_focused" from="HBoxContainer/SubViewportContainer/SubViewport/Game/Map/MouseoverChecker" to="HBoxContainer/InfoBar/StatsPanel/VBoxContainer/MouseoverLabel" method="set_text"]
