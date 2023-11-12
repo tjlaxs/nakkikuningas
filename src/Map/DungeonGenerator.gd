@@ -76,7 +76,7 @@ func _place_entities(dungeon: MapData, room: Rect2i) -> void:
 				new_entity = Entity.new(dungeon, new_entity_position, entity_types.troll)
 			dungeon.entities.append(new_entity)
 
-func _generate_new_room(dw: int, dh: int, min_size: int, max_size: int):
+func _generate_new_room(dw: int, dh: int, _min_size: int, _max_size: int):
 	var room_width: int = _rng.randi_range(room_min_size, room_max_size)
 	var room_height: int = _rng.randi_range(room_min_size, room_max_size)
 	
