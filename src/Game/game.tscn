@@ -8,29 +8,54 @@
 [ext_resource type="Script" path="res://src/Map/DungeonGenerator.gd" id="4_2v6nn"]
 [ext_resource type="Script" path="res://src/Map/FieldOfView.gd" id="5_j7kt0"]
 
-[node name="Game" type="Node2D"]
+[node name="InterfaceRoot" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="HBoxContainer/SubViewportContainer"]
+canvas_item_default_texture_filter = 0
+size = Vector2i(1152, 648)
+
+[node name="Game" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport"]
 script = ExtResource("1_eyp25")
 
-[node name="InputHandler" type="Node" parent="."]
+[node name="InputHandler" type="Node" parent="HBoxContainer/SubViewportContainer/SubViewport/Game"]
 script = ExtResource("2_1ptu4")
 
-[node name="MainGameInputHandler" type="Node" parent="InputHandler"]
+[node name="MainGameInputHandler" type="Node" parent="HBoxContainer/SubViewportContainer/SubViewport/Game/InputHandler"]
 script = ExtResource("2_wcq1s")
 
-[node name="GameOverInputHandler" type="Node" parent="InputHandler"]
+[node name="GameOverInputHandler" type="Node" parent="HBoxContainer/SubViewportContainer/SubViewport/Game/InputHandler"]
 script = ExtResource("3_ka2xn")
 
-[node name="Map" type="Node2D" parent="."]
+[node name="Map" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Game"]
 script = ExtResource("3_makwk")
 
-[node name="Tiles" type="Node2D" parent="Map"]
+[node name="Tiles" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Game/Map"]
 
-[node name="Entities" type="Node" parent="Map"]
+[node name="Entities" type="Node" parent="HBoxContainer/SubViewportContainer/SubViewport/Game/Map"]
 
-[node name="DungeonGenerator" type="Node" parent="Map"]
+[node name="DungeonGenerator" type="Node" parent="HBoxContainer/SubViewportContainer/SubViewport/Game/Map"]
 script = ExtResource("4_2v6nn")
 
-[node name="FieldOfView" type="Node" parent="Map"]
+[node name="FieldOfView" type="Node" parent="HBoxContainer/SubViewportContainer/SubViewport/Game/Map"]
 script = ExtResource("5_j7kt0")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Game"]
