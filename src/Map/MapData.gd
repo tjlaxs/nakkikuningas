@@ -15,9 +15,10 @@ var entities: Array[Entity]
 var player: Entity
 var pathfinder: AStarGrid2D
 
-func _init(map_width: int, map_height: int) -> void:
+func _init(map_width: int, map_height: int, plr: Entity) -> void:
 	width = map_width
 	height = map_height
+	self.player = plr
 	entities = []
 	_setup_tiles()
 

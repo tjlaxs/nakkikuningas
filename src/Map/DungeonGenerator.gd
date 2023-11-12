@@ -11,7 +11,7 @@ extends Node
 @export var room_min_size: int = 6
 
 @export_category("Monster RNG")
-@export var max_monster_per_room = 2
+@export var max_monsters_per_room = 2
 
 const entity_types = {
 	"orc": preload("res://assets/definitions/entities/actors/EntityDefinitionOrc.tres"),
@@ -55,7 +55,7 @@ func _tunnel_between(dungeon: MapData, start: Vector2i, end: Vector2i):
 		_tunnel_horizontal(dungeon, end.y, start.x, end.x)
 
 func _place_entities(dungeon: MapData, room: Rect2i) -> void:
-	var number_of_monsters: int = _rng.randi_range(0, max_monster_per_room)
+	var number_of_monsters: int = _rng.randi_range(0, max_monsters_per_room)
 	
 	for _i in number_of_monsters:
 		var x: int = randi_range(room.position.x + 1, room.end.x - 1)
@@ -86,7 +86,7 @@ func _generate_new_room(dw: int, dh: int, min_size: int, max_size: int):
 	return Rect2i(x, y, room_width, room_height)
 
 func generate_dungeon(player: Entity) -> MapData:
-	var dungeon := MapData.new(map_width, map_height)
+	var dungeon := MapData.new(map_width, map_height, player)
 	dungeon.entities.append(player)
 	
 	var rooms: Array[Rect2i] = []

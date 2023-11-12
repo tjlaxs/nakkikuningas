@@ -8,6 +8,7 @@ extends Resource
 
 @export_category("Mechanics")
 @export var is_blocking_movement: bool = true
+@export var type: int = 2 # Entity.EntityType.ACTOR
 
 @export_category("Components")
 @export var fighter_definition: FighterComponentDefinition
