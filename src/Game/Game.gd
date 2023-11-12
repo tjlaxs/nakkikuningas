@@ -29,5 +29,5 @@ func _physics_process(delta) -> void:
 
 func _handle_enemy_turns() -> void:
 	for entity in get_map_data().get_actors():
-		if entity.is_alive() and entity == player:
+		if entity.is_alive() and entity != player:
 			entity.ai_component.perform()
