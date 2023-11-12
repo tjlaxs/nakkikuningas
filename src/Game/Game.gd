@@ -1,6 +1,8 @@
 class_name Game
 extends Node2D
 
+signal player_created(player: Entity)
+
 const player_definition: EntityDefinition = preload("res://assets/definitions/entities/actors/EntityDefinitionPlayer.tres")
 
 @onready var player: Entity
@@ -10,10 +12,15 @@ const player_definition: EntityDefinition = preload("res://assets/definitions/en
 
 func _ready() -> void:
 	player = Entity.new(null, Vector2i.ZERO, player_definition)
+	player_created.emit(player)
 	remove_child(camera)
 	player.add_child(camera)
 	map.generate(player)
 	map.update_fov(player.grid_position)
+	MessageLog.send_message.bind(
+		"Welcome to the dark dungeons!",
+		GameColors.WELCOME_TEXT
+	).call_deferred()
 
 func get_map_data() -> MapData:
 	return map.map_data
