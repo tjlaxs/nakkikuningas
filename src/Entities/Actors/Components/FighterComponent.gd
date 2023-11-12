@@ -38,4 +38,4 @@ func die() -> void:
 	entity.entity_name = "Remains of %s" % entity.entity_name
 	entity.blocks_movement = false
 	get_map_data().unregister_blocking_entity(entity)
-	entity.type = 0 # Entity.EntityType.CORPSE
+	entity.type = Entity.Type.CORPSE

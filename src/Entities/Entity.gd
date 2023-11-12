@@ -1,8 +1,16 @@
 class_name Entity
 extends Sprite2D
 
-enum EntityType {CORPSE = 0, ITEM = 1, ACTOR = 2}
-enum AiType {NONE = 0, HOSTILE = 1}
+const Type = {
+	"CORPSE": 0,
+	"ITEM": 1,
+	"ACTOR": 2,
+}
+
+const AiType = {
+	"NONE": 0,
+	"HOSTILE": 1,
+}
 
 var _definition: EntityDefinition
 var entity_name: String
@@ -11,7 +19,7 @@ var map_data: MapData
 var fighter_component: FighterComponent
 var ai_component: BaseAiComponent
 
-var type: EntityType:
+var type: int:
 	set(value):
 		type = value
 		z_index = type
@@ -21,10 +29,10 @@ var grid_position: Vector2i:
 		grid_position = value
 		position = Grid.grid_to_world(grid_position)
 
-func _init(map_data: MapData, start_position: Vector2i, entity_definition: EntityDefinition) -> void:
+func _init(md: MapData, start_position: Vector2i, entity_definition: EntityDefinition) -> void:
 	centered = false
 	grid_position = start_position
-	self.map_data = map_data
+	self.map_data = md
 	set_entity_type(entity_definition)
 
 func move(move_offset: Vector2i) -> void:
@@ -33,7 +41,7 @@ func move(move_offset: Vector2i) -> void:
 	map_data.register_blocking_entity(self)
 
 func is_blocking_movement() -> bool:
-	return _definition.is_blocking_movement
+	return blocks_movement
 
 func get_entity_name() -> String:
 	return _definition.name

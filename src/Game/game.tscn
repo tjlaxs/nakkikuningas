@@ -34,7 +34,6 @@ map_height = null
 max_rooms = null
 room_max_size = null
 room_min_size = null
-max_monster_per_room = null
 
 [node name="FieldOfView" type="Node" parent="Map"]
 script = ExtResource("5_j7kt0")
