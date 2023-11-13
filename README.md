@@ -7,7 +7,8 @@ do stuff with it.
 
 ### CI
 
-- filename for windows build is missing ".exe"
+- Filename for windows build is missing ".exe"
+- Run GUT before building
 
 ## About
 
