@@ -3,6 +3,14 @@
 A very simple roguelike. I'm just trying to understand Godot and how other people
 do stuff with it.
 
+## TODO
+
+### CI
+
+- filename for windows build is missing ".exe"
+
+## About
+
 Going through SelinaDevs tutorials in the beginning:
 [Yet Another Roguelike Tutorial](https://selinadev.github.io/05-rogueliketutorial-01/)
 
