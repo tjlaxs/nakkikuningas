@@ -9,7 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        platform: [linux,windows,mac]
+        platform:
+          - name: linux
+            file: nakkikuningas
+          - name: windows
+            file: nakkikuningas.exe
+          - name: mac
+            file: nakkikuningas.zip
     steps:
       - uses: actions/checkout@v2
         with:
@@ -18,13 +24,13 @@ jobs:
         id: build
         uses: tjlaxs/build-godot-action@master
         with:
-          name: ${{ matrix.platform == 'mac' && 'nakkikuningas.zip' || 'nakkikuningas' }}
-          preset: ${{ matrix.platform }}
+          name: ${{ matrix.platform.file }}
+          preset: ${{ matrix.platform.name }}
       - name: List files
         run: |
           tree .
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Client - ${{ matrix.platform }}
+          name: ${{ matrix.platform.file }} - ${{ matrix.platform.name }}
           path: ${{ github.workspace }}/${{ steps.build.outputs.build }}
