@@ -1,7 +1,6 @@
 name: Build nakkikuningas Godot Project
 
 on:
-  push: {}
   pull_request: {}
 
 jobs:
